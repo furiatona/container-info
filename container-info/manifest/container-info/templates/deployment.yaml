@@ -1,0 +1,48 @@
+{{- range .Values.deployments }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" $ }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}-deployment
+  labels:
+    app: {{ $.Values.appName }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}
+spec:
+  replicas: {{ .replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: {{ $.Values.appName }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.appName }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}
+    spec:
+      {{- include "chart.volume" $ | nindent 6 }}
+      containers:
+      - name: {{ $.Values.appName }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}
+        image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        {{- include "chart.volume.mount" $ | nindent 8 }}
+        command:
+          - ./{{ $.Values.appName }}
+          - {{ .arg | default "\"\"" }}
+        {{- if .services }}
+        ports:
+        {{- range .services }}
+        - containerPort: {{ .targetPort }}
+          name: {{ .protocolName }}
+        {{- end }}
+        {{- end }}
+        {{- if .probes }}
+        readinessProbe:
+          {{- toYaml .probes.readinessProbe | nindent 10 }}
+        {{- end }}
+        resources:
+          {{- toYaml $.Values.resources | nindent 10 }}
+      imagePullSecrets: 
+      - name: {{ $.Values.image.pullSecrets }}
+---
+{{- end }}

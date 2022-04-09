@@ -1,0 +1,22 @@
+{{- range .Values.deployments }}
+{{- if .services }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chart.fullname" $ }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}-service
+  labels:
+    app: {{ $.Values.appName }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}
+spec:
+  ports:
+  {{- range .services }}
+  - name: {{ .protocolName }}
+    port: {{ .port }}
+    targetPort: {{ .targetPort }}
+    protocol: TCP
+  {{- end }}
+  selector:
+    app: {{ $.Values.appName }}{{ eq .runmode "default" | ternary "" (printf "-%s" .runmode) }}
+  type: {{ .serviceType }}
+---
+{{- end }}
+{{- end }}

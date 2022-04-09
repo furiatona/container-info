@@ -1,0 +1,64 @@
+# application name
+appName: container-info
+
+# deployment setup
+deployments:
+  - runmode: default
+    replicaCount: 1
+    serviceType: NodePort
+    services:
+    - protocolName: http
+      port: 8080
+      targetPort: 8080
+    probes:
+      readinessProbe:
+        httpGet:
+          path: /ping
+          port: 8080
+        initialDelaySeconds: 5
+        periodSeconds: 3
+
+# image configuration
+image:
+  repository: us.gcr.io/work-trial-346603/container-info
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecrets: us.gcr.io
+
+# hpa configuration
+hpa:
+  enabled:  true
+  minReplicas: 1
+  maxReplicas: 20
+  averageCpuUtilization: 75
+
+configmap:
+  enabled: true
+  configPath: /
+  file_name_app: config.env
+  config: |-
+    # DB Configuration
+    mysqluser: "db user"
+    mysqlpass: "db pass"
+    mysqlhost: "db ip"
+    mysqldb: "db name"
+
+sealedsecret:
+  enabled: true
+  filename: config.env
+  config: |-
+    AgCi0Ux0vvY705Uea0r0r1Slozxn8QPps8+OGw+UbMLeS1gv/k8Qdu26yF3Tdo8qOdKfvA3i7GMLQDI6z5c+O+CY+/xN2SI3q0VQnTO1HAYebX46vRBdXqdMpVXh7CMWUVYrNgFXkc3oEFvp0uxQBsVuRw47Cai/bnArIzayxjfXsfbXUeHT2NTJIUISOXm4rcrrR5buvEPFl7SgzNd5JHa9vvk+TRYtdRdAB+qL/lZNjKm6xJU3xuGylTKukoYT7RLS/ambn1zKWrMajcYFTR/d/nw54ztwNCiRFNRv3+toTgtb44vRn/a/ct56HZeQsiDlKIfkzqzc6uHDXlbVayekNXZbs9Q41HCAeioEb+zf/6194+zj4mR8GbTASENscDvP/6ZWh15D5SwMy17hJVDw5T2Vs14njt9l1XVscyKxcdM61kS5pyt9R+0JQ5u5LcZKsgCWOTptlpK/JjvNRkhby5kVcalPVL+0uE3YTTua25oo4TniCU3qHvEpFIDiIRn13JipFPJU95IWDs2biWDYx0IR6RtU2bZsZf4sEKwpaopKjkoAqUXpqdJTkswkM1OZnsOTTBZX99ieGT4QGkQKjxKW9SepdeKxrkXBJR9rEBpfJVfvT7GnayCdKuOO1VJb5vODdwKAJoGmPPA7T7piM1IvJg45wE1O+pZHQRmniQbC7oeQ4r1azx0VkYadHXau224bnGMczByhv4OBHpyorLJ2OZIvuab5WWjaNCHTfiWXaVfP11IAMMmnuz8mrCAa2leTfi1b5wbgOM5sfR9qghQL07P4hrJoEz86vRQgrQFxGp+jZi3z4NcBRiNOR3BlGDMuN4hRf6kUoIZyPpO94EYXk9ksQ6rhjNKV0EKTRxBIkXRL9EDkRwFPm20WQ/pthKM=
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
