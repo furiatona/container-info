@@ -6,12 +6,9 @@ import(
 	"runtime"
 	"os"
 	"log"
-	"bytes"
-	"container-info/models"
 	"container-info/config"
 	"container-info/logging"
 	"container-info/connectionpool"
-	"encoding/json"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/mackerelio/go-osstat/memory"
@@ -37,13 +34,13 @@ func getinfo(c *gin.Context){
 		fmt.Println("error occured")
 		return
 	}
-	current_date, _:= time.Parse("2006-01-02 15:04:05 -0700 MST",time.Now().Format("2006-01-02 15:04:05"))
+	current_date := time.Now().Format("2006-01-02 15:04:05") 
 	if err != nil{
 		fmt.Println(err)
 	}
 	os := runtime.GOOS
 	memory_used_percentage := float64(memory.Used)/float64(memory.Total)*100
-	ID := "oncall-"
+	ID := "Xendit - Trial - Dheny Priatna - 2022-04-08 - " + current_date
 	container_data := map[string]interface{}{
 	"ID":ID,
 	"current_date":current_date, 
@@ -75,23 +72,12 @@ func logging_stdout(container_data map[string]interface{}){
 
 }
 func logging_db(container_data map[string]interface{}){
-	jsonStr, err := json.Marshal(container_data)
-	if err != nil {
-		logging.Log.WithFields(logrus.Fields{}).Errorf("Unable to execute the query. error:%v.", err)
-		fmt.Println(err)
-	}
-	var container_info_data models.ContainerInfo
-	err = json.NewDecoder(bytes.NewReader(jsonStr)).Decode(&container_info_data)
-	if err != nil {
-		logging.Log.WithFields(logrus.Fields{}).Errorf("Unable to execute the query. error:%v.", err)
-		fmt.Println(err)
-	}
-	insert_db(container_info_data)
+	insert_db(container_data)
 }
 
 // function to insert into database.
-func insert_db(g models.ContainerInfo) {
-	querytext := fmt.Sprintf("INSERT INTO ContainerInfo (ID,Date,OS,Memory_total,Memory_used,Memory_cached,Memory_free,Memory_percentage,Cpu_user,Cpu_system,Cpu_idle) values ('%s','%s','%s','%v','%v','%v','%v','%v','%v','%v','%v')", g.ID, g.Date, g.OS,g.Memory_total, g.Memory_used, g.Memory_cached,g.Memory_free, g.Memory_percentage,g.Cpu_user,g.Cpu_system,g.Cpu_idle)
+func insert_db(g map[string]interface{}) {
+	querytext := fmt.Sprintf("INSERT INTO ContainerInfo (ID,Date,OS,Memory_total,Memory_used,Memory_cached,Memory_free,Memory_percentage,Cpu_user,Cpu_system,Cpu_idle) values ('%s','%s','%s','%v','%v','%v','%v','%v','%v','%v','%v')", g["ID"], g["current_date"], g["OS"],g["memory_total"], g["memory_used"], g["memory_cached"],g["memory_free"], g["memory_percentage"],g["cpu_user"],g["cpu_system"],g["cpu_idle"])
 	fmt.Println(querytext)
 	_, err := connectionpool.CreateConnection.Exec(querytext)
 	if err != nil {
