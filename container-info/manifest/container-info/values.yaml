@@ -34,8 +34,8 @@ hpa:
 
 configmap:
   enabled: true
-  configPath: /
-  file_name_app: config.env
+  configPath: /config
+  file_name_app: config.env.local
   config: |-
     # DB Configuration
     mysqluser: "db user"
@@ -45,6 +45,7 @@ configmap:
 
 sealedsecret:
   enabled: true
+  configPath: /config
   filename: config.env
   config: |-
     AgCi0Ux0vvY705Uea0r0r1Slozxn8QPps8+OGw+UbMLeS1gv/k8Qdu26yF3Tdo8qOdKfvA3i7GMLQDI6z5c+O+CY+/xN2SI3q0VQnTO1HAYebX46vRBdXqdMpVXh7CMWUVYrNgFXkc3oEFvp0uxQBsVuRw47Cai/bnArIzayxjfXsfbXUeHT2NTJIUISOXm4rcrrR5buvEPFl7SgzNd5JHa9vvk+TRYtdRdAB+qL/lZNjKm6xJU3xuGylTKukoYT7RLS/ambn1zKWrMajcYFTR/d/nw54ztwNCiRFNRv3+toTgtb44vRn/a/ct56HZeQsiDlKIfkzqzc6uHDXlbVayekNXZbs9Q41HCAeioEb+zf/6194+zj4mR8GbTASENscDvP/6ZWh15D5SwMy17hJVDw5T2Vs14njt9l1XVscyKxcdM61kS5pyt9R+0JQ5u5LcZKsgCWOTptlpK/JjvNRkhby5kVcalPVL+0uE3YTTua25oo4TniCU3qHvEpFIDiIRn13JipFPJU95IWDs2biWDYx0IR6RtU2bZsZf4sEKwpaopKjkoAqUXpqdJTkswkM1OZnsOTTBZX99ieGT4QGkQKjxKW9SepdeKxrkXBJR9rEBpfJVfvT7GnayCdKuOO1VJb5vODdwKAJoGmPPA7T7piM1IvJg45wE1O+pZHQRmniQbC7oeQ4r1azx0VkYadHXau224bnGMczByhv4OBHpyorLJ2OZIvuab5WWjaNCHTfiWXaVfP11IAMMmnuz8mrCAa2leTfi1b5wbgOM5sfR9qghQL07P4hrJoEz86vRQgrQFxGp+jZi3z4NcBRiNOR3BlGDMuN4hRf6kUoIZyPpO94EYXk9ksQ6rhjNKV0EKTRxBIkXRL9EDkRwFPm20WQ/pthKM=
