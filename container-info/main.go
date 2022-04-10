@@ -59,6 +59,7 @@ func getinfo(c *gin.Context){
 	c.JSON(http.StatusOK, container_data)
 }
 func logging_stdout(container_data map[string]interface{}){
+	fmt.Printf("ID: %v\n", container_data["ID"])
 	fmt.Printf("Current date: %v\n", container_data["current_date"])
 	fmt.Printf("OS Type: %v\n", container_data["OS"])
 	fmt.Printf("memory total: %d bytes\n", container_data["memory_total"])
