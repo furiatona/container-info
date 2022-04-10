@@ -22,7 +22,7 @@ deployments:
 image:
   repository: us.gcr.io/work-trial-346603/container-info
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   pullSecrets: us.gcr.io
 
 # hpa configuration
