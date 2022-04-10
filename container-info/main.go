@@ -2,9 +2,7 @@ package main
 
 import(
 	"fmt"
-	"time"
 	"runtime"
-	"os"
 	"log"
 	"bytes"
 	"container-info/models"
@@ -14,48 +12,12 @@ import(
 	"encoding/json"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/mackerelio/go-osstat/memory"
-	"github.com/mackerelio/go-osstat/cpu"
 	"github.com/sirupsen/logrus"
 )
 func getinfo(c *gin.Context){
-	before, err := cpu.Get()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
-		return
-	}
-	time.Sleep(time.Duration(1) * time.Second)
-	after, err := cpu.Get()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
-		return
-	}
-	total := float64(after.Total - before.Total)
-	memory, err := memory.Get()
-	if err != nil {
-		fmt.Println(err)
-		fmt.Println("error occured")
-		return
-	}
-	current_date, _:= time.Parse("2006-01-02 15:04:05 -0700 MST",time.Now().Format("2006-01-02 15:04:05"))
-	if err != nil{
-		fmt.Println(err)
-	}
 	os := runtime.GOOS
-	memory_used_percentage := float64(memory.Used)/float64(memory.Total)*100
-	ID := "oncall-"
 	container_data := map[string]interface{}{
-	"ID":ID,
-	"current_date":current_date, 
 	"OS":os, 
-	"memory_total":memory.Total,
-	"memory_used":memory.Used,
-	"memory_cached":memory.Cached,
-	"memory_free":memory.Free,
-	"memory_percentage":memory_used_percentage,
-	"cpu_user":float64(after.User-before.User)/total*100,
-	"cpu_system":float64(after.System-before.System)/total*100,
-	"cpu_idle":float64(after.Idle-before.Idle)/total*100,
 }
 	logging_stdout(container_data)
 	logging_db(container_data)
