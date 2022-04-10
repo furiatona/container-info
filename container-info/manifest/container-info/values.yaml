@@ -28,7 +28,7 @@ image:
 # hpa configuration
 hpa:
   enabled:  true
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 20
   averageCpuUtilization: 75
 
