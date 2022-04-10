@@ -20,9 +20,19 @@ RUN apk add --no-cache bash
 ## STAGE 2 : Package the binary in a minimal alpine base image
 FROM alpine:latest
 
+ARG USER=container-info
+ENV HOME /home/$USER
 ENV APP_DIR /go/src/github.com/furiatona/container-info
+
+RUN apk add --update sudo \
+    && adduser -D $USER \
+    && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
+    && chmod 0440 /etc/sudoers.d/$USER
+
+USER $USER
+WORKDIR $HOME
 
 COPY --from=bash_builder ${APP_DIR} .
 COPY --from=builder ${APP_DIR} .
 EXPOSE 8080
-CMD ["/container-info"]
+CMD ["./container-info"]

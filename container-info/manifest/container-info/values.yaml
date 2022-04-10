@@ -34,7 +34,7 @@ hpa:
 
 configmap:
   enabled: true
-  configPath: /config
+  configPath: /home/container-info/config
   file_name_app: config.env.local
   config: |-
     # DB Configuration
@@ -45,7 +45,7 @@ configmap:
 
 sealedsecret:
   enabled: true
-  configPath: /config
+  configPath: /home/container-info/config
   filename: config.env
   config: |-
     AgBepRXjq0CYxf8fVOs6CpYRlH4EpddWFGFhZr6TTA9fokokfQAqhGlxvE8rBUtttBY4wUR9j+T1C6WRrDZRw3LeYB9hRCDvL3L16ETrPQ+eoZhgzJN77CGSZaNmioRJnehAVXoeIFNSxt+/UiTJiKL5cy7BQgbc2a1TMdOdO51R/T6v1lCoQbaH+e1a41ZHW5kAwGfK6e534HwPEazHcEnkv8LHgH/OacUM9LpT9OCuLaHguzJi+oKOYLhnnsnk51JAJKjWq4Xzu3SQHeW7VSinULVOn5C7pGNMt30YtyBLztqCR4U0a6rVMIsK0HOy6h1B7FsamX6WOZts3U0Nn160tfplGz1lW1kCTcWq/DHkUEYnvaAqJ6CJzOyCKxwKYt1kIoAJzhpuzRqbomRZOABC8ZTHZdOBOT7CkJ0qY7s66cRoli6dTPfB9uruzl/BzZw+zptV/yxNqXz5yRCyMJp4BNTBgJbUfwvfssmR/gzyX6txDJiTbDSXH682uPQs0iTfjQ3THZLtvdgKPQrEIqbZwA4QreE+KVHQHr+gqnRk3CQYNn4zo53nKr/tPPoGwLJcYAgKmTnCexLAGYLgoLXdPzygIsi5LZKjvBQLjFVAbxwRN0htw4yvVOn29hoKf5R9eb9DWgXaQbAMP/HCPLXHeAX91EA0A99DiHba6kYUaAYvk8ovGb+hXvz8OVE527Skw/klD2ieDwbmTCladFCzqk56jeAVuGjxf3I3ZZz8EPHudlQqCFdLAduQz11qG3/tKdHNwTy+ylCunGGcZ2BcwHhKEuhVvygldiBsnifoBfgEQuhYgGi/A0je1pF2q5SdIkm5plecB5QUJI+nxJUElyP7Yw5yh59i5leS4ngO4KudCvoTAoY4QNkF/CN9WLA=
