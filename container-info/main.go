@@ -37,16 +37,16 @@ func getinfo(c *gin.Context){
 		fmt.Println("error occured")
 		return
 	}
-	current_date, _:= time.Parse("2006-01-02 15:04:05 -0700 MST",time.Now().Format("2006-01-02 15:04:05"))
+	current_date := time.Now()
 	if err != nil{
 		fmt.Println(err)
 	}
 	os := runtime.GOOS
 	memory_used_percentage := float64(memory.Used)/float64(memory.Total)*100
-	ID := "oncall-"
+	ID := "container-info"
 	container_data := map[string]interface{}{
 	"ID":ID,
-	"current_date":current_date, 
+	"Xendit - Trial - Dheny Priatna - 8 April 2022 - Current date":current_date, 
 	"OS":os, 
 	"memory_total":memory.Total,
 	"memory_used":memory.Used,
@@ -62,7 +62,7 @@ func getinfo(c *gin.Context){
 	c.JSON(http.StatusOK, container_data)
 }
 func logging_stdout(container_data map[string]interface{}){
-	fmt.Printf("Current Date : %v\n", container_data["current_date"])
+	fmt.Printf("Xendit - Trial - Dheny Priatna - 8 April 2022 - Current date: %v\n", container_data["current_date"])
 	fmt.Printf("OS Type: %v\n", container_data["OS"])
 	fmt.Printf("memory total: %d bytes\n", container_data["memory_total"])
 	fmt.Printf("memory used: %d bytes\n", container_data["memory_used"])
